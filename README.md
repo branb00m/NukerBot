@@ -1,7 +1,7 @@
 # NukerBot
-A Discord.js NukerBot that will please your expectations. 
+**A Discord.js NukerBot that will please your expectations.**
 
-# To customize it, replace the following strings with your message:
+# To customize it, replace the following strings with your message in prefix.json:
 #### Act stands for Activity Status
 #### Cm stands for Channel Message
 #### Em stands for Emoji Message
@@ -19,3 +19,6 @@ A Discord.js NukerBot that will please your expectations.
 
 # Help
 **To retrieve a guild's id, you must enable Developer Mode in your account settings**
+
+# Requirements:
+**Requires Node.js 12 and up. Also discord.js@12.2.0**
