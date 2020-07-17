@@ -14,7 +14,7 @@ A Discord.js NukerBot that will please your expectations.
 **If there are any bugs, contact me on Discord. My tag is badb00m#5321.**
 
 # Commands:
-**snuke, nuke**
+**snuke and nuke**
 **Snuke requires the guild's id to nuke the server. Thus meaning that the bot must be in the victim's server and you can nuke it from your guild.**
 **Nuke is MITM. It has to be in the server or it will nuke YOUR server.**
 
