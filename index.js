@@ -22,8 +22,8 @@ bot.on("guildDelete", guild => {
 
 bot.on("message", msg => {
     if(msg.author.id !== Main.ownid) return; //Making sure that nobody can access it besides you.
-    if(!msg.content.startsWith("h/")) return;
-    let args = msg.content.slice("h/".length).split(" ");
+    if(!msg.content.startsWith(Main.prefix)) return;
+    let args = msg.content.slice(Main.prefix.length).split(" ");
     let cmd = args.shift().toLowerCase();
     if(cmd === "snuke") {
         try {
