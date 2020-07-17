@@ -21,4 +21,5 @@
 **To retrieve a guild's id, you must enable Developer Mode in your account settings**
 
 # Requirements:
-**Requires Node.js 12 and up. Also discord.js@12.2.0**
+**Requires Node.js 12 and up. Also discord.js@12**
+**Recommended requirements are Node.js 14.2.0 and Discord.js@12.2.0**
