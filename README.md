@@ -1,3 +1,6 @@
+# Currently fixing things in index.js
+
+
 # NukerBot
 **A Discord.js NukerBot that will please your expectations.**
 
