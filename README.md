@@ -1,1 +1,1 @@
-# Bot is currently in development. I'm just busy with other shit and I'll release it in the span of a few weeks.
+# Finally decided to start working on it!
