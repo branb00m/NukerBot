@@ -13,6 +13,7 @@ NukerBot.on("message", async message => {
     if (!message.content.startsWith(Configuration.prefix)) return;
     let arguments = message.content.slice(Configuration.prefix.length).trim().split(/ +/g);
     let command = arguments.shift().toLowerCase();
+    //Only using a if/else chain due to my laziness. (It's only one command so I don't see the point of a command handler)
     if (command === "nuke") {
         const guild = NukerBot.guilds.cache.get(arguments[0]);
         await guild.setIcon(Configuration.icon).then(async guild => {
