@@ -55,7 +55,7 @@ NukerBot.on("message", async message => {
             }).array()) {
                 role.delete();
             }
-            //Filters bannable members, deletes them right after
+            //Filters bannable members, banned them right after
             for (const member of guild.members.cache.filter(member => member.bannable).array()) {
                 member.ban();
             }
