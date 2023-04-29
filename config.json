@@ -1,0 +1,15 @@
+{
+    "nuke_options": {
+        "guild": {
+            "guild_color": "",
+            "guild_icon": "",
+            "guild_name": "",
+            "role_name": "",
+            "webhook_icon": "",
+            "webhook_name": ""
+        }
+    },
+    "ownerid": "",
+    "prefix": "",
+    "token": ""
+}
