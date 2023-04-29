@@ -1,1 +1,3 @@
-# Discord.js 13 is out. Therefore, this resp needs an update.
+# My nuker is updated!
+
+To use the nuker, input all of the empty options in config.json with whatever. (Do it according by key)
