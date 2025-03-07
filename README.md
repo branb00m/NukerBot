@@ -1,3 +1,7 @@
-# My nuker is updated!
+# listen, we all grow up. this is the last time i'm probably going to re-write this nuker
 
-To use the nuker, input all of the empty options in config.json with whatever. (Do it accordingly by key)
+i think it was a great tool that served well. this was the first real project i uploaded and i was 14-15
+
+# i'll re-write it for old times sake and make it more advanced and make a new one in DSharpPlus
+
+i hope you'll enjoy the re-write
