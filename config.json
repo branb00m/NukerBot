@@ -1,9 +1,43 @@
 {
     "nuke_options": {
-         "guild_icon": "./icon.png",
-         "guild_name": "GUILD_NAME_GOES_HERE",
+        "guild": {
+            "name": "",
+            "reason": ""
+        },
+
+        "channel": {
+            "name": "",
+            "message": ""
+        },
+
+        "icons": {
+            "guild": "./icons/guild_icon.png",
+            "avatar": "./icons/bot_icon.png",
+            "emoji": "./icons/emoji_icon.png"
+        },
+
+        "role": {
+            "name": "",
+            "color": ""
+        },
+
+        "filtered_members": [],
+        "filtered_guilds": [],
+
+
+        "protection_bots": [
+            {
+                "id": "536991182035746816"
+            },
+            {
+                "id": "651095740390834176"
+            }
+        ]
     },
-    "ownerid": "YOUR_USER_ACCOUNT_ID_GOES_HERE",
-    "prefix": "BOT_PREFIX_GOES_HERE",
-    "token": "BOT_TOKEN_GOES_HERE"
+
+    "client_options": {
+        "owner_id": "",
+        "prefix": "",
+        "token": ""
+    }
 }

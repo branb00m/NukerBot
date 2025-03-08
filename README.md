@@ -1,7 +1,12 @@
-# listen, we all grow up. this is the last time i'm probably going to re-write this nuker
+# the final re-write of this
 
-i think it was a great tool that served well. this was the first real project i uploaded and i was 14-15
+## i think this bot served great, especially as a 14 year old
 
-# i'll re-write it for old times sake and make it more advanced and make a new one in DSharpPlus or stick to discord.js
+the bot itself was a side-project i worked on. it was notoriously used to take down people's servers. mainly predators
 
-i hope you'll enjoy the re-write
+this is the final re-write. i don't plan on working on this anymore and if there's any security risks, i'll fix them when i have time
+
+I've also re-wrote this in DSharpPlus
+
+# latest changes:
+
