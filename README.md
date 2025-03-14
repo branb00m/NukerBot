@@ -10,3 +10,5 @@ I've also re-wrote this in DSharpPlus
 
 # latest changes:
 
+Bot can delete 75+ channels and create 75 new channels in 800ms
+
