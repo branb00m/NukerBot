@@ -12,3 +12,4 @@ I've also re-wrote this in DSharpPlus
 
 Bot can delete 75+ channels and create 75 new channels in 800ms
 
+Bot can send 55-75+ new messages at once to each channel
