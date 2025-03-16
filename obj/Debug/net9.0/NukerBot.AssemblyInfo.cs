@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NukerBot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2130400ad50d48b6d2d5828d2f85372c8b8525b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b994e82663de4fb841893dc81c0ab52d13d0699f")]
 [assembly: System.Reflection.AssemblyProductAttribute("NukerBot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NukerBot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
