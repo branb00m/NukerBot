@@ -3,11 +3,12 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
+using NukerBot.src.Extensions;
 using NukerBot.src.Utils;
 
 namespace NukerBot.src.Modules;
 
-public sealed class Basic : BaseCommandModule
+public sealed class BasicModule : BaseCommandModule
 {
     public required Config Config { get; set; }
 
@@ -20,11 +21,10 @@ public sealed class Basic : BaseCommandModule
 
         var protectionBots = Config.Nuking.Options.ProtectionBots;
 
-        var currentPage = 0;
-
-        if(protectionBots.Count <= 0) {
+        if (protectionBots.Count <= 0)
+        {
             await context.RespondAsync("Whatever you've done, you've fucked up the bot. I told your ass not TO TOUCH THAT CHUNK");
-        } 
+        }
 
         for (int i = 0; i < protectionBots.Count; i++)
         {
@@ -42,66 +42,21 @@ public sealed class Basic : BaseCommandModule
             embeds.Add(embed);
         }
 
-        var embedMessage = await DiscordUtils.AddNavigationReactions(context, embeds);
-
         var interactivity = context.Client.GetInteractivity();
+        var message = await interactivity.AddNavigationReactionsAsync(context, embeds);
 
-        while (true)
-        {
-            var awaitedReaction = await interactivity.WaitForReactionAsync(x => DiscordUtils.ReactionPredicate(context, x));
-            var result = awaitedReaction.Result;
-
-            if (awaitedReaction.TimedOut)
-            {
-                await embedMessage.ModifyAsync("Navigation stopped");
-                await embedMessage.DeleteAllReactionsAsync();
-
-                break;
-            }
-
-            if (result.Emoji == DiscordUtils.NavigationEmojis["Forwards"] && currentPage < embeds.Count - 1)
-            {
-                currentPage++;
-
-                await embedMessage.ModifyAsync(embeds[currentPage]);
-            }
-            else if (result.Emoji == DiscordUtils.NavigationEmojis["End"] && currentPage < embeds.Count - 1)
-            {
-                currentPage = embeds.Count - 1;
-
-                await embedMessage.ModifyAsync(embeds[currentPage]);
-            }
-            else if (result.Emoji == DiscordUtils.NavigationEmojis["Stop"])
-            {
-                await embedMessage.ModifyAsync("Navigation stopped");
-                await embedMessage.DeleteAllReactionsAsync();
-
-                break;
-            }
-            else if (result.Emoji == DiscordUtils.NavigationEmojis["Start"] && currentPage < embeds.Count - 1)
-            {
-                currentPage = 0;
-
-                await embedMessage.ModifyAsync(embeds[currentPage]);
-            }
-            else if (result.Emoji == DiscordUtils.NavigationEmojis["Backwards"] && currentPage > 0)
-            {
-                currentPage--;
-
-                await embedMessage.ModifyAsync(embeds[currentPage]);
-            }
-
-            await embedMessage.DeleteReactionAsync(result.Emoji, result.User);
-        }
+        await interactivity.DoNavigationEmojisAsync(context, message, TimeSpan.FromSeconds(30), embeds);
     }
 
     [Command("viewconfig")]
     [Aliases("vconfig")]
     [Description("Allows you to see your config properties")]
-    public async Task ViewConfigAsync(CommandContext context) {
+    public async Task ViewConfigAsync(CommandContext context)
+    {
         var embed = new DiscordEmbedBuilder()
             .WithTitle("Config properties")
-            .WithColor(0xff0000)
-            .WithDescription();
+            .WithColor(0xff0000);
+
+        await context.RespondAsync(Config.Nuking.Options.Channel.Name.MaskString());
     }
 }

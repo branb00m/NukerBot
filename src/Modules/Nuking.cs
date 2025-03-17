@@ -4,7 +4,7 @@ using NukerBot.src.Utils;
 
 namespace NukerBot.src.Modules;
 
-public sealed class Nuking : BaseCommandModule {
+public sealed class NukingModule : BaseCommandModule {
     public required Config Config { get; set; }
 
     [Command("remotenuke"), Aliases("rnuke")]

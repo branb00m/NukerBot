@@ -30,11 +30,13 @@ public static class NukingUtils
             select guild.CreateTextChannelAsync(config.Nuking.Options.Channel.Name)
         );
 
-    public static Task EradicateAsync(IEnumerable<DiscordChannel> channels, Config config) => Task.Run(async () =>
-    {
-        while (true)
-        {
-            await SpamChannelsAsync(channels, config);
-        }
-    });
+    public static Task EradicateAsync(IEnumerable<DiscordChannel> channels, Config config) =>
+        Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await SpamChannelsAsync(channels, config);
+                }
+            }
+        );
 }
