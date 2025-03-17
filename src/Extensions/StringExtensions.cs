@@ -56,5 +56,4 @@ public static partial class StringExtensions
 
         return builder.ToString();
     }
-
 }

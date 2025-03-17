@@ -3,9 +3,9 @@
         "options": {
             "logging": true,
 
-            "owner_ids": [1317190137385586809],
+            "owner_ids": [],
             "prefixes": ["n/", "n."],
-            "token": "MTM0ODEwODY1MDc2NTQ4NDA3Mw.G44xVi.a-2Bz3hkduwau45FwnEO7It7VWO9cOikMAdhM4"
+            "token": ""
         }
     },
 
@@ -39,7 +39,7 @@
             },
 
             "filtered": {
-                "members": [1317190137385586809],
+                "members": [],
                 "guilds": []
             },
 
