@@ -1,0 +1,67 @@
+
+1. Delegate Botting:
+    This requires a self-bot but what this does is basically allows you to pass on
+    your NukerBot instance to a self-bot. You have the option of running the NukerBot
+    simultaneously or blocking the instance to prioritize the self-bot
+
+2. Troll Nuking:
+    This allows roles to become unusable. You can mess with the permissions and make
+    them completely unrecognizable
+
+3. Stealth Nuking:
+    A slow ban wave, gradual channel removal, stealthy role deletion and act like a
+    normal bot with fake commands until triggered
+
+4. Botnet-Style Simultaneous Server Nuker (The equivalent of a DDoS attack):
+    Multiple parallel nuking (the controlled instances of multiple Discord bots
+    simultaneously.)
+
+5. Bot Impersonation: - completed (in alpha)
+    A random collection of bots to choose from that you can replicate using
+    a command. E.G: n.replicate mee6 or just n.replicate
+
+    This sets the avatar, name and tries to impersonate the chosen bot
+
+6. Vanity URL Snatcher - in progress:
+    Hijacks the server's custom Discord invite URL after nuking
+
+    Deletes the original invite, replicates with malicious invite and mass dm's the
+    users with the fake invite
+
+7. Invisible Mode:
+    No bot status, at all.
+
+    Doesn't send messages until activated
+    Self-Deletes logs
+
+    Can nuke at a specific time to avoid detection
+
+8. Ghost Nuking:
+    Deletes messages without any notification
+
+    Removes all features and members silently (As if the server just was deleted)
+
+    Unbans them
+
+9. Troll Nuking v2:
+    Flips channel names upside down
+    Changes role colors to a randomly chosen color
+
+    Floods voice calls with self-bots
+
+    Spams fake warnings (like people just were banned)
+
+10. Discord Economy Nuker:
+    Bots like Dank Memer can't be controlled by regular bots, but
+    with self-bots. You can drain their currencies and fuck
+    people's wallets over.
+
+    Spams commands to crash the bot
+
+    Spams a chosen message from the config for extra trolling
+
+11. Repeated Nuking:
+    Invite a bunch of bots behind their back (E.G: Self-bots)
+
+    Give the self-bots admin permissions in secret and monitor role
+    creation or the audit log itself.

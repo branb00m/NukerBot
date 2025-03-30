@@ -1,7 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace NukerBot.src.Extensions;
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -5,7 +6,7 @@ using DSharpPlus.Interactivity;
 
 namespace NukerBot.src.Extensions;
 
-public static class InteractivityExtensions {
+public static partial class InteractivityExtensions {
     public static readonly Dictionary<string, DiscordEmoji> NavigationEmojis = new() {
         {
             "Start", DiscordEmoji.FromUnicode("⏪")
@@ -14,7 +15,7 @@ public static class InteractivityExtensions {
             "Backwards", DiscordEmoji.FromUnicode("⬅️")
         },
         {
-            "Stop", DiscordEmoji.FromUnicode("⏸️")
+            "Stop", DiscordEmoji.FromUnicode("⏹")
         },
         {
             "Forwards", DiscordEmoji.FromUnicode("➡️")
@@ -97,11 +98,63 @@ public static class InteractivityExtensions {
         }
     }
 
-    public static bool ReactionPredicate(CommandContext context, MessageReactionAddEventArgs args)
+    private static bool ReactionPredicate(CommandContext context, MessageReactionAddEventArgs args)
     {
         var user = args.User;
         var emoji = args.Emoji;
 
         return context.User == user && NavigationEmojis.ContainsValue(emoji) && context.Channel == args.Channel;
+    }
+
+    /// <summary>
+    /// This basically is a lazy way to automate `DiscordEmbed` pages
+    /// </summary>
+    /// <typeparam name="TObject"></typeparam>
+    /// <returns></returns>
+    public static async Task<List<DiscordEmbed>> ToDiscordPages<TObject>(
+        this InteractivityExtension _,
+
+        IEnumerable<TObject> objects,
+
+        Func<TObject, string> titleSelector, Func<TObject, string>? descriptionSelector = null,
+        Func<TObject, DiscordColor>? colorSelector = null, Func<TObject, (string text, string iconURL)>? footerSelector = null,
+        Func<TObject, DateTimeOffset>? timestampSelector = null, Func<TObject, Task<string>>? thumbnailSelector = null,
+
+        params Func<TObject, (string name, string value)>[] selectors)
+    {
+        var objs = objects.Select(async TObject =>
+        {
+            var embed = new DiscordEmbedBuilder() {
+                Title = titleSelector(TObject)
+            };
+
+            if (descriptionSelector != null)
+                embed.WithDescription(descriptionSelector(TObject));
+
+            if (colorSelector != null)
+                embed.WithColor(colorSelector(TObject));
+
+            if (footerSelector != null) {
+                var (text, iconUrl) = footerSelector(TObject);
+                embed.WithFooter(text, iconUrl);
+            }
+
+            if (timestampSelector != null)
+                embed.WithTimestamp(timestampSelector(TObject));
+
+            if (thumbnailSelector != null)
+                embed.WithThumbnail(await thumbnailSelector(TObject));
+
+            foreach (var selector in selectors)
+            {
+                var (name, value) = selector(TObject);
+
+                embed.AddField(name, value);
+            }
+
+            return embed.Build();
+        });
+
+        return [..await Task.WhenAll(objs)];
     }
 }

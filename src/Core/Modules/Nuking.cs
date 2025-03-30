@@ -2,7 +2,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using NukerBot.src.Utils;
 
-namespace NukerBot.src.Modules;
+namespace NukerBot.src.Core.Modules;
 
 public sealed class NukingModule : BaseCommandModule {
     public required Config Config { get; set; }

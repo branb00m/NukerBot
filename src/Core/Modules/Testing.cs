@@ -2,7 +2,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using NukerBot.src.Extensions;
 
-namespace NukerBot.src.Modules;
+namespace NukerBot.src.Core.Modules;
 
 public sealed class TestingModule : BaseCommandModule {
     [Command("test")]

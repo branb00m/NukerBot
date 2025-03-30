@@ -1,9 +1,10 @@
+using System.Runtime.InteropServices;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext.Exceptions;
-using NukerBot.src.Entities;
+using NukerBot.src.Core.Entities;
 
-namespace NukerBot.src.Events;
+namespace NukerBot.src.Core.Events;
 
 [CommandsNextEvent]
 public static class CommandErrored
@@ -55,6 +56,10 @@ public static class CommandErrored
                         await context.RespondAsync("`this command can only be used in NSFW channels`");
                         return;
 
+                    case HasAcceptedAttribute:
+                        await context.RespondAsync("`this command requires you to accept the Accepted condition`");
+                        return;
+
                     default:
                         await context.RespondAsync("`requirement check failed`");
                         return;
@@ -71,7 +76,7 @@ public static class CommandErrored
         }
         else
         {
-            await context.RespondAsync("`an unexpected error occurred while executing the command`");
+            await context.RespondAsync($"`an unexpected error occurred while executing the command: {args.Exception.Message}`");
             Console.WriteLine($"`[ERROR] {args.Exception.Message}\n{args.Exception.StackTrace}`");
         }
     }

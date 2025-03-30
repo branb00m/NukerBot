@@ -1,11 +1,10 @@
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.DependencyInjection;
-using NukerBot.src.Entities;
+using NukerBot.src.Core.Entities;
 
-namespace NukerBot.src.Events;
+namespace NukerBot.src.Core.Events;
 
 [DiscordEvent]
 public static class GuildCreated
