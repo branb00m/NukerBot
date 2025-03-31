@@ -1,4 +1,3 @@
-using System.Reflection;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +34,9 @@ public sealed class HasAcceptedAttribute : CheckBaseAttribute
     }
 }
 
+/// <summary>
+/// `IsOwnerAttribute`. Used to mark commands as owner only
+/// </summary>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class IsOwnerAttribute : CheckBaseAttribute
 {

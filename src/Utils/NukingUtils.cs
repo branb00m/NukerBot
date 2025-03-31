@@ -32,10 +32,12 @@ public static class NukingUtils
     public static Task EradicateAsync(IEnumerable<DiscordChannel> channels, Config config) =>
         Task.Run(async () =>
             {
-                var count = 500;
+                var count = 0;
+
                 while (count <= 500)
                 {
                     await SpamChannelsAsync(channels, config);
+                    count += 1;
                 }
             }
         );

@@ -35,5 +35,4 @@ public sealed class InformationModule : BaseCommandModule
 
         await interactivity.DoNavigationEmojisAsync(context, message, TimeSpan.FromSeconds(30), pages);
     }
-
 }

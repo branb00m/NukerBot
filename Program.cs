@@ -15,13 +15,11 @@ public class Program
 
         //var deserialized = Config.Deserialize("/home/bran/Documents/Programming/NukerBot/src/Config/Default/config.jsonc");
         //for(int i = 0; i < deserialized.Nuking.Options.ImpersonationBots.Count; i++) {
-            
-            //Console.WriteLine($"{i} - {deserialized.Nuking.Options.ImpersonationBots[i]}");
-            //var user = await bot.Client.GetUserAsync(deserialized.Nuking.Options.ImpersonationBots[i].ID);
+        //Console.WriteLine($"{i} - {deserialized.Nuking.Options.ImpersonationBots[i]}");
+        //var user = await bot.Client.GetUserAsync(deserialized.Nuking.Options.ImpersonationBots[i].ID);
         //}
 
-        var controller = new InstanceController();
+        await InstanceService.RunAsync(args);
 
-        
     }
 }

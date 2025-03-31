@@ -1,8 +1,6 @@
-using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.Json;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace NukerBot.src.Core.Delegating;
 
@@ -14,6 +12,7 @@ internal static class Endpoints
 
     // Discord's endpoints
     // These are minimal for now. Again, these bots are only for delegating messages, channels and members
+
     internal static readonly string Channels = "channels";
     internal static readonly string Emojis = "emojis";
     internal static readonly string Guilds = "guilds";
@@ -41,7 +40,7 @@ internal sealed class InstanceHTTPClient
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0");
     }
 
-    private async Task<HttpContent> SendRequestAsync(HttpMethod method, string endpoint, object? payload = null)
+    private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string endpoint, object? payload = null)
     {
         HttpRequestMessage request = new(method, Endpoints.API + '/' + endpoint);
 
@@ -54,7 +53,7 @@ internal sealed class InstanceHTTPClient
 
         HttpResponseMessage response = await client.SendAsync(request);
 
-        return response.Content;
+        return response;
     }
 
     private static StringContent ToJson(object obj) => new(JsonSerializer.Serialize(obj), Encoding.UTF8, "application/json");
@@ -72,7 +71,7 @@ internal sealed class InstanceHTTPClient
 
     public async Task<DiscordGuild?> GetGuildAsync(ulong ID)
     {
-        var response = await client.GetAsync(Endpoints.Guilds + '/' + ID);
+        var response = await SendRequestAsync(HttpMethod.Get, Endpoints.Guilds + '/' + ID);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -84,7 +83,7 @@ internal sealed class InstanceHTTPClient
 
     public async Task<DiscordChannel?> GetChannelAsync(ulong ID)
     {
-        var response = await client.GetAsync(Endpoints.Channels + '/' + ID);
+        var response = await SendRequestAsync(HttpMethod.Get, Endpoints.Guilds + '/' + ID);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -94,10 +93,10 @@ internal sealed class InstanceHTTPClient
         return await Deserialize<DiscordChannel>(response);
     }
 
-    public async Task<bool> SendMessageAsync(ulong channelID, string content)
+    public async Task<bool> SendMessageAsync(ulong ID, string content)
     {
         var payload = new { content };
-        var response = await client.PostAsync(Endpoints.Channels + '/' + channelID + '/' + Endpoints.Messages, ToJson(payload));
+        var response = await SendRequestAsync(HttpMethod.Post, Endpoints.Channels + '/' + ID, ToJson(payload));
 
         return response.IsSuccessStatusCode;
     }
