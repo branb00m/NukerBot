@@ -89,12 +89,23 @@ public class NukingOptions
     [JsonProperty("filtered")]
     public Filtered Filtered { get; internal set; }
 
+    [JsonProperty("delegating")]
+    public Delegation Delegation { get; internal set; }
+
     [JsonProperty("protection_bots")]
     public List<ProtectionBot> ProtectionBots { get; internal set; }
 
     [JsonProperty("impersonation_bots")]
     public List<ImpersonationBot> ImpersonationBots { get; internal set; }
+
+    [JsonProperty("accepted")]
     public bool Accepted { get; internal set; }
+}
+
+public class Delegation
+{
+    [JsonProperty("tokens")]
+    public List<string> Tokens { get; internal set; }
 }
 
 public class ImpersonationBot
@@ -103,7 +114,7 @@ public class ImpersonationBot
     public string Name { get; internal set; }
 
     [JsonProperty("id")]
-    public ulong ID { get; set; }
+    public ulong ID { get; internal set; }
 
     public static explicit operator DiscordUser(ImpersonationBot bot)
     {

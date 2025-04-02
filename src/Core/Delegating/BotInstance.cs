@@ -15,7 +15,7 @@ internal partial class BotInstance
     {
         this.ID = ID;
 
-        token = ReadToken(token).Value;
+        token = DelegationUtils.ValidateToken(token);
 
         _httpClient = new(token);
     }
@@ -27,18 +27,18 @@ internal partial class BotInstance
     public async Task PauseAsync() => await ChangeStatusAsync(InstanceCodes.Idle);
 
     public async Task RestartAsync() => await ChangeStatusAsync(InstanceCodes.Restarted);
+}
 
-    private static Match ReadToken(string token)
+internal partial class BotInstance
+{
+    public event EventHandler<InstanceCodes>? OnStatusChanged;
+
+    private async Task ChangeStatusAsync(InstanceCodes newStatus)
     {
-        Match match = Regex.Match(token, DelegationUtils._tokenPattern, RegexOptions.IgnoreCase);
+        Status = newStatus;
 
-        // Prevents connections from being made if the provided string has an invalid regex pattern
+        OnStatusChanged?.Invoke(this, newStatus);
 
-        if (!match.Success)
-        {
-            throw new Exception($"{token} is an invalid token");
-        }
-
-        return match;
+        await Task.CompletedTask;
     }
 }

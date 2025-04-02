@@ -11,7 +11,7 @@ public class Program
         //Bot bot = new();
         //await bot.Start();
 
-        // GeneralUtils.GetTotalLines("/home/bran/Documents/Programming/NukerBot/");
+        GeneralUtils.GetTotalLines("/home/bran/Documents/Programming/NukerBot/");
 
         //var deserialized = Config.Deserialize("/home/bran/Documents/Programming/NukerBot/src/Config/Default/config.jsonc");
         //for(int i = 0; i < deserialized.Nuking.Options.ImpersonationBots.Count; i++) {
@@ -19,7 +19,6 @@ public class Program
         //var user = await bot.Client.GetUserAsync(deserialized.Nuking.Options.ImpersonationBots[i].ID);
         //}
 
-        await InstanceService.RunAsync(args);
-
+        //await InstanceService.RunAsync(args);
     }
 }

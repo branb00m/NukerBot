@@ -1,11 +1,13 @@
 using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
+using NukerBot.src.Utils;
 
 namespace NukerBot.src.Core.Delegating;
 
 [ApiController]
 [Route("bots")]
-public sealed class InstanceController : ControllerBase
+public sealed partial class InstanceController : ControllerBase
 {
     private static readonly ConcurrentDictionary<ulong, BotInstance> _instances = new();
 
@@ -18,6 +20,7 @@ public sealed class InstanceController : ControllerBase
         }
 
         await bot.StartAsync();
+
         return await Task.FromResult(Ok($"Instance {bot.ID} started"));
     }
 
@@ -30,6 +33,7 @@ public sealed class InstanceController : ControllerBase
         }
 
         await bot.StopAsync();
+
         return await Task.FromResult(Ok($"Instance {bot?.ID} stopped"));
     }
 
@@ -42,6 +46,7 @@ public sealed class InstanceController : ControllerBase
         }
 
         await bot.RestartAsync();
+
         return await Task.FromResult(Ok($"Instance {bot.ID} restarted"));
     }
 
@@ -54,6 +59,7 @@ public sealed class InstanceController : ControllerBase
         }
 
         await bot.PauseAsync();
+
         return await Task.FromResult(Ok($"Instance {bot.ID} restarted"));
     }
 
@@ -68,7 +74,7 @@ public sealed class InstanceController : ControllerBase
         return await Task.FromResult(Ok(bot));
     }
 
-    [HttpGet("bots")]
+    [HttpGet("list")]
     public async Task<IActionResult> GetBotsAsync()
     {
         var bots = _instances.ToList();
@@ -77,16 +83,33 @@ public sealed class InstanceController : ControllerBase
     }
 }
 
-internal partial class BotInstance
+public sealed partial class InstanceController
 {
-    public event EventHandler<InstanceCodes>? OnStatusChanged;
-
-    private async Task ChangeStatusAsync(InstanceCodes newStatus)
+    public async Task LoadInstancesAsync(string @tokensPath)
     {
-        Status = newStatus;
+        string path = CheckPath("tokens.txt");
 
-        OnStatusChanged?.Invoke(this, newStatus);
+        foreach(var token in await System.IO.File.ReadAllLinesAsync(path))
+        {
+            try {
+                var validated = DelegationUtils.ValidateToken(token);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
 
-        await Task.CompletedTask;
+                continue;
+            }
+        }
+    }
+
+    private static string CheckPath(string tokensPath)
+    {
+        var fullPath = Path.GetFullPath(tokensPath).TrimEnd(Path.PathSeparator);
+
+        if (string.IsNullOrEmpty(tokensPath) || !Path.Exists(fullPath))
+        {
+            throw new Exception($"{nameof(tokensPath)} cannot be null, empty or invalid");
+        }
+
+        return fullPath;
     }
 }
