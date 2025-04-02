@@ -9,14 +9,18 @@ namespace NukerBot.src.Core.Entities;
 /// Classes marked with this attribute must match the target event name
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class DiscordEventAttribute : Attribute;
+public sealed class DiscordEventAttribute : Attribute {
+    
+}
 
 /// <summary>
 /// `CommandsNextEventAttribute`. Used to essentially "mark" classes as a registerable `CommandsNextExtension` event.
 /// Classes marked with this attribute must match the target event name
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class CommandsNextEventAttribute : Attribute;
+public sealed class CommandsNextEventAttribute : Attribute {
+
+}
 
 /// <summary>
 /// `HasAcceptedAttribute`. Determines if the author has accepted the terms and conditions of using this program.

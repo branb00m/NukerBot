@@ -19,6 +19,6 @@ public class Program
         //var user = await bot.Client.GetUserAsync(deserialized.Nuking.Options.ImpersonationBots[i].ID);
         //}
 
-        //await InstanceService.RunAsync(args);
+        await InstanceService.RunAsync(args);
     }
 }

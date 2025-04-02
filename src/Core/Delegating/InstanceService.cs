@@ -13,10 +13,21 @@ public sealed class InstanceService
         host.MapControllers();
         host.UseStaticFiles();
 
+        host.Use(async (context, next) =>
+        {
+            if (context.Request.Path == "/favicon.ico")
+            {
+                context.Response.StatusCode = 204;
+                return;
+            }
+            await next();
+        });
+
         await host.RunAsync();
     }
 
-    private static WebApplication GetWebApplication(string[] args) {
+    private static WebApplication GetWebApplication(string[] args)
+    {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
