@@ -106,6 +106,12 @@ public class Delegation
 {
     [JsonProperty("tokens")]
     public List<string> Tokens { get; internal set; }
+
+    [JsonProperty("max_size")]
+    public int MaxSize { get; internal set; }
+
+    [JsonProperty("proxies")]
+    public string[] Proxies { get; internal set; }
 }
 
 public class ImpersonationBot
@@ -232,3 +238,7 @@ public class Config
 
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+
+public sealed class ConfigValidator {
+    
+}

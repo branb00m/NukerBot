@@ -1,6 +1,8 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
+using NukerBot.src.Utils;
 
 namespace NukerBot.src.Core.Delegating;
 
@@ -16,6 +18,7 @@ internal static class Endpoints
     internal static readonly string Channels = "channels";
     internal static readonly string Emojis = "emojis";
     internal static readonly string Guilds = "guilds";
+    internal static readonly string Invites = "invites";
     internal static readonly string Me = "@me";
     internal static readonly string Members = "members";
     internal static readonly string Messages = "messages";
@@ -36,8 +39,8 @@ internal sealed class InstanceHTTPClient
     {
         _token = token;
 
-        client.DefaultRequestHeaders.Add("Authorization", $"User {_token}");
-        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0");
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
     }
 
     private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod method, string endpoint, object? payload = null)
@@ -97,6 +100,19 @@ internal sealed class InstanceHTTPClient
     {
         var payload = new { content };
         var response = await SendRequestAsync(HttpMethod.Post, Endpoints.Channels + '/' + ID, ToJson(payload));
+
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> JoinGuildAsync(string inviteLink)
+    {
+        if (string.IsNullOrWhiteSpace(inviteLink))
+        {
+            throw new ArgumentNullException(nameof(inviteLink), "Link cannot be null or whitespace");
+        }
+
+        var match = DelegationUtils.ValidateInvite(inviteLink);
+        var response = await SendRequestAsync(HttpMethod.Post, Endpoints.Invites + '/' + match);
 
         return response.IsSuccessStatusCode;
     }

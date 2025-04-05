@@ -4,9 +4,11 @@ using NukerBot.src.Extensions;
 
 namespace NukerBot.src.Core.Modules;
 
-public sealed class TestingModule : BaseCommandModule {
+public sealed class TestingModule : BaseCommandModule
+{
     [Command("test")]
-    public async Task GetTestAsync(CommandContext context, [RemainingText] string text) {
+    public async Task GetTestAsync(CommandContext context, [RemainingText] string text)
+    {
         var capitalized = text.CapitalizeString();
 
         await context.RespondAsync(capitalized);

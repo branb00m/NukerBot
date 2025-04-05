@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
 
 namespace NukerBot.src.Utils;
@@ -11,7 +12,8 @@ public static class GeneralUtils
     public static TItem GetRandomItem<TItem>(Random random, List<TItem> items) =>
         items[random.Next(items.Count)];
 
-    public static void GetTotalLines(string @directoryPath) {
+    public static void GetTotalLines(string @directoryPath)
+    {
         int totalLines = 0;
 
         foreach (var file in Directory.EnumerateFiles(directoryPath, "*.cs", SearchOption.AllDirectories))
@@ -28,5 +30,15 @@ public static class GeneralUtils
         }
 
         Console.WriteLine(totalLines);
+    }
+
+    public static bool IsValidFileExtension(string @filePath, string pattern)
+    {
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException(filePath);
+        }
+
+        return Regex.IsMatch(Path.GetFileName(@filePath), pattern);
     }
 }

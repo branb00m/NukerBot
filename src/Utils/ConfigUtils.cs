@@ -1,32 +1,19 @@
+using System.Collections;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using NukerBot.src.Core;
 
 namespace NukerBot.src.Utils;
 
 public static class ConfigUtils
 {
-    public static void CheckConfig<TConfig>(TConfig config) where TConfig : Config
-    {
-        var type = typeof(TConfig);
-
-        var properties = type.GetProperties(BindingFlags.Public);
-        foreach (var property in properties)
-        {
-
-        }
-    }
 
     public static string CheckConfigPath(string @filePath)
     {
         if (string.IsNullOrEmpty(filePath))
         {
             throw new ArgumentNullException(nameof(filePath), "filePath cannot be null or empty");
-        }
-
-        if (string.IsNullOrWhiteSpace(filePath))
-        {
-            throw new ArgumentNullException(nameof(filePath), "filePath cannot be null or whitespace");
         }
 
         if (!(IsSpecificPath(filePath, "src/Config/Default/config.jsonc") || IsSpecificPath(filePath, "src/Config/Custom/config.jsonc")))
@@ -62,5 +49,25 @@ public static class ConfigUtils
         }
 
         return normalizedInput.Equals(normalizedTarget, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static object? GetDefaultValue(Type type)
+    {
+        if (type.IsValueType)
+        {
+            return Activator.CreateInstance(type);
+        }
+
+        if (type == typeof(string))
+        {
+            return string.Empty;
+        }
+
+        if (typeof(IEnumerable).IsAssignableFrom(type))
+        {
+            return Activator.CreateInstance(type);
+        }
+
+        return null;
     }
 }

@@ -20,13 +20,29 @@ internal partial class BotInstance
         _httpClient = new(token);
     }
 
-    public async Task StartAsync() => await ChangeStatusAsync(InstanceCodes.Online);
+    public async Task StartAsync() {
+        // code
 
-    public async Task StopAsync() => await ChangeStatusAsync(InstanceCodes.Offline);
+        await ChangeStatusAsync(InstanceCodes.Online);
+    }
 
-    public async Task PauseAsync() => await ChangeStatusAsync(InstanceCodes.Idle);
+    public async Task StopAsync() {
+        // code
 
-    public async Task RestartAsync() => await ChangeStatusAsync(InstanceCodes.Restarted);
+        await ChangeStatusAsync(InstanceCodes.Offline);
+    }
+
+    public async Task PauseAsync() {
+        // code
+
+        await ChangeStatusAsync(InstanceCodes.Idle);
+    }
+
+    public async Task RestartAsync() {
+        // code
+
+        await ChangeStatusAsync(InstanceCodes.Restarted);
+    }
 }
 
 internal partial class BotInstance

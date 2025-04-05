@@ -6,7 +6,7 @@ using NukerBot.src.Utils;
 namespace NukerBot.src.Core.Delegating;
 
 [ApiController]
-[Route("bots")]
+[Route("/")]
 public sealed partial class InstanceController : ControllerBase
 {
     private static readonly ConcurrentDictionary<ulong, BotInstance> _instances = new();
@@ -87,7 +87,7 @@ public sealed partial class InstanceController
 {
     public async Task LoadInstancesAsync(string @tokensPath)
     {
-        string path = CheckPath("tokens.txt");
+        string path = CheckPath(tokensPath);
 
         foreach(var token in await System.IO.File.ReadAllLinesAsync(path))
         {

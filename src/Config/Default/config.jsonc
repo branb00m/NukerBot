@@ -41,8 +41,17 @@
                 "guilds": []
             },
 
+            /*
+            I'd recommend that you only modify tokens in the delegation part.
+            Why? The default proxies will fulfill your needs. You don't have to add your own in here.
+            You can modify the custom config to support your own proxies. That's ok.
+
+            If not, the config checker will automatically assign the default proxies if empty.
+            */
             "delegation": {
-                "tokens": []
+                "tokens": [],
+
+                "proxies": []
             },
 
             "accepted": false,
