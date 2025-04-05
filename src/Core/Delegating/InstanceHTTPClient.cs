@@ -1,7 +1,5 @@
-using System.Net;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
 using NukerBot.src.Core.Strategies.Proxies;
 using NukerBot.src.Utils;
@@ -27,7 +25,7 @@ internal static class Endpoints
     internal static readonly string Roles = "roles";
 }
 
-internal sealed class InstanceHTTPClient
+internal sealed partial class InstanceHTTPClient
 {
     private readonly HttpClient client;
     private readonly JsonSerializerOptions _jsonOptions = new()
@@ -127,4 +125,11 @@ internal sealed class InstanceHTTPClient
 
         return response.IsSuccessStatusCode;
     }
+}
+
+internal sealed partial class InstanceHTTPClient {
+    internal event EventHandler<string> OnCommandExecuted;
+    internal event EventHandler OnReady;
+    internal event EventHandler<string> OnLog;
+    internal event EventHandler<Exception> OnException;
 }

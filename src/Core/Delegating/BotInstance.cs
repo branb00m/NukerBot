@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using NukerBot.src.Utils;
 
 namespace NukerBot.src.Core.Delegating;
@@ -21,7 +20,7 @@ internal partial class BotInstance
     }
 
     public async Task StartAsync() {
-        // code
+        // code goes here
 
         await ChangeStatusAsync(InstanceCodes.Online);
     }
