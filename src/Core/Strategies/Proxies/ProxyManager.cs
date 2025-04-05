@@ -23,26 +23,29 @@ public sealed class ProxyManager
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentNullException(nameof(filePath), "Cannot be null or whitespace");
 
-        if (!GeneralUtils.IsValidFileExtension(filePath, ProxyUtils.FilePattern))
-        {
-            logger.LogWarning("Invalid file extension. Skipping file: {FilePath}", filePath);
-            return;
-        }
 
-        string[] proxiesFromFile = await File.ReadAllLinesAsync(filePath);
-        int requiredCount = config.Nuking.Options.Delegation.MaxSize;
-
+        int maxSize = config.Nuking.Options.Delegation.MaxSize;
         string[] selectedProxies;
 
-        if (proxiesFromFile.Length < requiredCount)
+        if (!GeneralUtils.IsValidFileExtension(filePath, ProxyUtils.FilePattern))
         {
-            logger.LogWarning("Not enough custom proxies found. Reverting to default proxies.");
+            logger.LogWarning("Invalid file extension. Using default proxies");
             selectedProxies = config.Nuking.Options.Delegation.Proxies;
         }
         else
         {
-            logger.LogInformation("Using custom proxies from file.");
-            selectedProxies = proxiesFromFile;
+            string[] proxiesFromFile = await File.ReadAllLinesAsync(filePath);
+
+            if (proxiesFromFile.Length < maxSize)
+            {
+                logger.LogWarning("Not enough custom proxies. Using default proxies");
+                selectedProxies = config.Nuking.Options.Delegation.Proxies;
+            }
+            else
+            {
+                logger.LogInformation("Using custom proxies from file");
+                selectedProxies = proxiesFromFile;
+            }
         }
 
         proxies.Clear();
@@ -50,7 +53,7 @@ public sealed class ProxyManager
         int added = 0;
         foreach (string proxy in selectedProxies)
         {
-            if (added >= requiredCount)
+            if (added >= maxSize)
                 break;
 
             var parsed = ParseProxy(proxy);
@@ -61,7 +64,7 @@ public sealed class ProxyManager
             }
             else
             {
-                logger.LogWarning("Skipping invalid proxy format: {Proxy}", proxy);
+                logger.LogWarning("Skipping invalid proxy: {Proxy}", proxy);
             }
         }
     }
