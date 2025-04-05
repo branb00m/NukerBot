@@ -1,7 +1,9 @@
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
+using NukerBot.src.Core.Strategies.Proxies;
 using NukerBot.src.Utils;
 
 namespace NukerBot.src.Core.Delegating;
@@ -27,7 +29,7 @@ internal static class Endpoints
 
 internal sealed class InstanceHTTPClient
 {
-    private readonly HttpClient client = new();
+    private readonly HttpClient client;
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -35,9 +37,18 @@ internal sealed class InstanceHTTPClient
 
     private readonly string _token;
 
-    internal InstanceHTTPClient(string token)
+    internal InstanceHTTPClient(string token, ProxyManager? manager = null)
     {
         _token = token;
+
+        var handler = new HttpClientHandler();
+
+        if(manager != null) {
+            handler.Proxy = manager.GetProxy();
+            handler.UseProxy = true;
+        }
+
+        client = new(handler);
 
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token}");
         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");

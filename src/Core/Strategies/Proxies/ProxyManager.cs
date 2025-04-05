@@ -18,7 +18,9 @@ public sealed class ProxyManager
         this.config = config;
     }
 
-    public async Task GetProxiesFromFile(string? filePath = null)
+    public WebProxy? GetProxy() => proxies.FirstOrDefault();
+
+    public async Task GetProxies(string? filePath = null)
     {
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentNullException(nameof(filePath), "Cannot be null or whitespace");
