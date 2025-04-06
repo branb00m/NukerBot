@@ -4,6 +4,36 @@ namespace NukerBot.src.Extensions;
 
 public static partial class StringExtensions
 {
+    private readonly static Dictionary<char, char> flipped = new()
+    {
+        ['a'] = 'ɐ',
+        ['b'] = 'q',
+        ['c'] = 'ɔ',
+        ['d'] = 'p',
+        ['e'] = 'ǝ',
+        ['f'] = 'ɟ',
+        ['g'] = 'ƃ',
+        ['h'] = 'ɥ',
+        ['i'] = 'ᴉ',
+        ['j'] = 'ɾ',
+        ['k'] = 'ʞ',
+        ['l'] = 'l',
+        ['m'] = 'ɯ',
+        ['n'] = 'u',
+        ['o'] = 'o',
+        ['p'] = 'd',
+        ['q'] = 'b',
+        ['r'] = 'ɹ',
+        ['s'] = 's',
+        ['t'] = 'ʇ',
+        ['u'] = 'n',
+        ['v'] = 'ʌ',
+        ['w'] = 'ʍ',
+        ['x'] = 'x',
+        ['y'] = 'ʎ',
+        ['z'] = 'z'
+    };
+
     /// <summary>
     /// Masks a string by creating a new string with the length of the original string
     /// Since strings in C# are immutable, we had to solve for that by making a new string with the exact same length
@@ -52,5 +82,24 @@ public static partial class StringExtensions
         }
 
         return builder.ToString();
+    }
+
+    public static string FlipString(this string text)
+    {
+        string flippedText = "";
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            if (flipped.TryGetValue(text[i], out char flippedChar))
+            {
+                flippedText += flippedChar;
+            }
+            else
+            {
+                flippedText += text[i];
+            }
+        }
+
+        return flippedText;
     }
 }

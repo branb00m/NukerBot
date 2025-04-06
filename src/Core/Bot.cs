@@ -24,11 +24,11 @@ public sealed class Bot
     public Bot()
     {
         Client = new(GetDiscordConfiguration(Config));
-
         Client.UseInteractivity(GetInteractivityConfiguration());
 
         CommandsNext = Client.UseCommandsNext(GetCommandsNextConfiguration(Config));
         CommandsNext.RegisterCommands(Assembly.GetExecutingAssembly());
+        CommandsNext.SetHelpFormatter<BotHelpFormatter>();
     }
 
     public async Task Start()

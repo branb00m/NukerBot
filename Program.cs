@@ -8,8 +8,8 @@ public class Program
 {
     public async static Task Main(string[] args)
     {
-        //Bot bot = new();
-        //await bot.Start();
+        Bot bot = new();
+        await bot.Start();
 
         GeneralUtils.GetTotalLines("/home/bran/Documents/Programming/NukerBot/");
 
@@ -19,6 +19,6 @@ public class Program
         //var user = await bot.Client.GetUserAsync(deserialized.Nuking.Options.ImpersonationBots[i].ID);
         //}
 
-        await InstanceService.RunAsync(args);
+        //await InstanceService.RunAsync(args);
     }
 }

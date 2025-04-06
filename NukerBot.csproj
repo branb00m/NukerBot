@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.3" />
 
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+    <PackageReference Include="System.Drawing.Common" Version="9.0.3" />
   </ItemGroup>
 
 </Project>

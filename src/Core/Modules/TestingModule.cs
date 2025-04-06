@@ -9,8 +9,8 @@ public sealed class TestingModule : BaseCommandModule
     [Command("test")]
     public async Task GetTestAsync(CommandContext context, [RemainingText] string text)
     {
-        var capitalized = text.CapitalizeString();
+        var flipped = text.FlipString();
 
-        await context.RespondAsync(capitalized);
+        await context.RespondAsync(flipped);
     }
 }

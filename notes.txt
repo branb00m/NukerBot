@@ -1,5 +1,5 @@
 
-1. Delegate Botting:
+1. Delegate Botting - in progress:
     This requires a self-bot but what this does is basically allows you to pass on
     your NukerBot instance to a self-bot. You have the option of running the NukerBot
     simultaneously or blocking the instance to prioritize the self-bot
@@ -13,10 +13,9 @@
     normal bot with fake commands until triggered
 
 4. Botnet-Style Simultaneous Server Nuker (The equivalent of a DDoS attack):
-    Multiple parallel nuking (the controlled instances of multiple Discord bots
-    simultaneously.)
+    Multiple parallel nuking (the controlled instances of multiple Discord bots simultaneously.)
 
-5. Bot Impersonation: - completed (in alpha)
+5. Bot Impersonation: - completed (in alpha) - being re-done
     A random collection of bots to choose from that you can replicate using
     a command. E.G: n.replicate mee6 or just n.replicate
 

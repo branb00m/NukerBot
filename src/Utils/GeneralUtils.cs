@@ -34,6 +34,10 @@ public static class GeneralUtils
 
     public static bool IsValidFileExtension(string @filePath, string pattern)
     {
+        if(string.IsNullOrWhiteSpace(filePath)) {
+            throw new ArgumentNullException(nameof(filePath), "Cannot be null, empty or whitespace");
+        }
+
         if (!File.Exists(filePath))
         {
             throw new FileNotFoundException(filePath);
