@@ -4,27 +4,21 @@ using NukerBot.src.Utils;
 
 namespace NukerBot.src.Core.Strategies.Proxies;
 
-public sealed class ProxyManager
+public sealed class ProxyManager(Config config)
 {
     public IReadOnlyList<WebProxy> Proxies => proxies;
     private readonly List<WebProxy> proxies = [];
 
     private readonly ILogger logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ProxyManager>();
 
-    private readonly Config config;
-
-    public ProxyManager(Config config)
-    {
-        this.config = config;
-    }
-
-    public WebProxy? GetProxy() => proxies.FirstOrDefault();
+    private readonly Config config = config;
 
     public async Task GetProxies(string? filePath = null)
     {
         if (string.IsNullOrWhiteSpace(filePath))
-            throw new ArgumentNullException(nameof(filePath), "Cannot be null or whitespace");
-
+        {
+            throw new ArgumentNullException(nameof(filePath), "Cannot be null, empty or whitespace");
+        }
 
         int maxSize = config.Nuking.Options.Delegation.MaxSize;
         string[] selectedProxies;
@@ -69,6 +63,19 @@ public sealed class ProxyManager
                 logger.LogWarning("Skipping invalid proxy: {Proxy}", proxy);
             }
         }
+    }
+
+    /// <summary>
+    /// GetProxy obtains a proxy from ProxyManager.Proxies
+    /// </summary>
+    /// <param name="position">If position has no custom argument use default argument (which is 0) </param>
+    /// <returns> The proxy to use. </returns>
+    public WebProxy? GetProxy(int position = 0) {
+        if(position > proxies.Count) {
+            return null;
+        } 
+
+        return proxies.ElementAt(position);
     }
 
     private static WebProxy? ParseProxy(string proxy)
