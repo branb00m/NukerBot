@@ -13,10 +13,10 @@ public sealed class ProxyManager(Config config)
 
     private readonly Config config = config;
 
-    public async Task GetProxies(string filePath = "")
+    public async Task GetProxiesAsync(string filePath = "")
     {
         int maxSize = config.Nuking.Options.Delegation.MaxSize;
-        string[] selectedProxies = [];
+        string[] selectedProxies;
 
         if (!GeneralUtils.IsValidFileExtension(filePath, ProxyUtils.FilePattern))
         {
@@ -27,25 +27,25 @@ public sealed class ProxyManager(Config config)
         else
         {
             try
-        {
-            string[] fileProxies = await GetProxyAddressesAsync(filePath);
-
-            if (fileProxies.Length < maxSize)
             {
-                logger.LogWarning("Not enough custom proxies found in file. Using default proxies.");
+                string[] fileProxies = await GetProxyAddressesAsync(filePath);
+
+                if (fileProxies.Length < maxSize)
+                {
+                    logger.LogWarning("Not enough custom proxies found in file. Using default proxies.");
+                    selectedProxies = config.Nuking.Options.Delegation.Proxies;
+                }
+                else
+                {
+                    logger.LogInformation("Using custom proxies from file.");
+                    selectedProxies = fileProxies;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error reading proxies from file. Using default proxies instead.");
                 selectedProxies = config.Nuking.Options.Delegation.Proxies;
             }
-            else
-            {
-                logger.LogInformation("Using custom proxies from file.");
-                selectedProxies = fileProxies;
-            }
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error reading proxies from file. Using default proxies instead.");
-            selectedProxies = config.Nuking.Options.Delegation.Proxies;
-        }
         }
 
         proxies.Clear();
@@ -95,7 +95,8 @@ public sealed class ProxyManager(Config config)
             return null;
         }
 
-        if(!int.TryParse(parts[1], out int port)) {
+        if (!int.TryParse(parts[1], out int port))
+        {
             return null;
         }
 
@@ -114,9 +115,10 @@ public sealed class ProxyManager(Config config)
         return proxy;
     }
 
-    private static async Task<string[]> GetProxyAddresses(string @filePath)
+    private static async Task<string[]> GetProxyAddressesAsync(string @filePath)
     {
-        if(!File.Exists(filePath)) {
+        if (!File.Exists(filePath))
+        {
             throw new FileNotFoundException("File not found", filePath);
         }
 
