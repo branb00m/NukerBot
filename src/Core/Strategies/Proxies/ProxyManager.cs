@@ -13,47 +13,61 @@ public sealed class ProxyManager(Config config)
 
     private readonly Config config = config;
 
-    public async Task GetProxies(string? filePath = null)
+    public async Task GetProxies(string filePath = "")
     {
-        if (string.IsNullOrWhiteSpace(filePath))
-        {
-            throw new ArgumentNullException(nameof(filePath), "Cannot be null, empty or whitespace");
-        }
-
         int maxSize = config.Nuking.Options.Delegation.MaxSize;
-        string[] selectedProxies;
+        string[] selectedProxies = [];
 
         if (!GeneralUtils.IsValidFileExtension(filePath, ProxyUtils.FilePattern))
         {
-            logger.LogWarning("Invalid file extension. Using default proxies");
+            logger.LogWarning("Invalid file extension. Only accepted file extension is txt. Switching to default proxies");
+
             selectedProxies = config.Nuking.Options.Delegation.Proxies;
         }
         else
         {
-            string[] proxiesFromFile = await File.ReadAllLinesAsync(filePath);
+            try
+        {
+            string[] fileProxies = await GetProxyAddressesAsync(filePath);
 
-            if (proxiesFromFile.Length < maxSize)
+            if (fileProxies.Length < maxSize)
             {
-                logger.LogWarning("Not enough custom proxies. Using default proxies");
+                logger.LogWarning("Not enough custom proxies found in file. Using default proxies.");
                 selectedProxies = config.Nuking.Options.Delegation.Proxies;
             }
             else
             {
-                logger.LogInformation("Using custom proxies from file");
-                selectedProxies = proxiesFromFile;
+                logger.LogInformation("Using custom proxies from file.");
+                selectedProxies = fileProxies;
             }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error reading proxies from file. Using default proxies instead.");
+            selectedProxies = config.Nuking.Options.Delegation.Proxies;
+        }
         }
 
         proxies.Clear();
 
         int added = 0;
+
+        HashSet<string> seen = [];
+
         foreach (string proxy in selectedProxies)
         {
             if (added >= maxSize)
+            {
                 break;
+            }
+
+            if (string.IsNullOrWhiteSpace(proxy) || !seen.Add(proxy))
+            {
+                continue;
+            }
 
             var parsed = ParseProxy(proxy);
-            if (parsed != null)
+            if (parsed is not null)
             {
                 proxies.Add(parsed);
                 added++;
@@ -63,36 +77,54 @@ public sealed class ProxyManager(Config config)
                 logger.LogWarning("Skipping invalid proxy: {Proxy}", proxy);
             }
         }
+
+        logger.LogInformation("Loaded {Count} proxies", added);
     }
 
-    /// <summary>
-    /// GetProxy obtains a proxy from ProxyManager.Proxies
-    /// </summary>
-    /// <param name="position">If position has no custom argument use default argument (which is 0) </param>
-    /// <returns> The proxy to use. </returns>
-    public WebProxy? GetProxy(int position = 0) {
-        if(position > proxies.Count) {
-            return null;
-        } 
-
-        return proxies.ElementAt(position);
-    }
-
-    private static WebProxy? ParseProxy(string proxy)
+    private WebProxy? ParseProxy(string proxyAddress)
     {
-        var proxyParts = proxy.Split(':');
-        if (proxyParts.Length < 2)
+        if (string.IsNullOrWhiteSpace(proxyAddress))
         {
             return null;
         }
 
-        WebProxy webProxy = new(proxyParts[0], int.Parse(proxyParts[1]));
+        var parts = proxyAddress.Split(':');
 
-        if (proxyParts.Length == 4)
+        if (parts.Length < 2)
         {
-            webProxy.Credentials = new NetworkCredential(proxyParts[2], proxyParts[3]);
+            return null;
         }
 
-        return webProxy;
+        if(!int.TryParse(parts[1], out int port)) {
+            return null;
+        }
+
+        WebProxy proxy = new(parts[0], port);
+
+        if (parts.Length == 4)
+        {
+            proxy.Credentials = new NetworkCredential(parts[2], parts[3]);
+        }
+
+        if (proxies.Contains(proxy))
+        {
+            return null;
+        }
+
+        return proxy;
+    }
+
+    private static async Task<string[]> GetProxyAddresses(string @filePath)
+    {
+        if(!File.Exists(filePath)) {
+            throw new FileNotFoundException("File not found", filePath);
+        }
+
+        var lines = await File.ReadAllLinesAsync(filePath);
+
+        return [.. lines
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct()];
     }
 }
