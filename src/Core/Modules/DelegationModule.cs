@@ -1,12 +1,10 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using NukerBot.src.Core.Delegating;
 
 namespace NukerBot.src.Core.Modules;
 
 public sealed class DelegationModule : BaseCommandModule
 {
-    public required InstanceController Controller { get; set; }
 
     [Command("activate")]
     [Aliases("enable")]
