@@ -1,5 +1,4 @@
 using DSharpPlus;
-using DSharpPlus.AsyncEvents;
 
 namespace NukerBot.src.Core.Delegating;
 

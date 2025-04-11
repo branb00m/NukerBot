@@ -1,5 +1,6 @@
 using DSharpPlus.Entities;
 using NukerBot.src.Core;
+using NukerBot.src.Extensions;
 
 namespace NukerBot.src.Utils;
 
@@ -28,6 +29,15 @@ public static class NukingUtils
             from _ in Enumerable.Range(0, 75)
             select guild.CreateTextChannelAsync(config.Nuking.Options.Channel.Name)
         );
+
+    public static Task<DiscordWebhook[]> CreateWebhooksAsync(DiscordChannel[] channels) {
+        var random = new Random();
+
+        return Task.WhenAll(
+            from channel in channels
+            select channel.CreateWebhookAsync(GeneralUtils.Randomize(random))
+        );
+    }
 
     public static Task EradicateAsync(IEnumerable<DiscordChannel> channels, Config config) =>
         Task.Run(async () =>

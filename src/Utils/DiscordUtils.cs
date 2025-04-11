@@ -69,4 +69,8 @@ public static class DiscordUtils
 
         return byteArray;
     }
+
+    public static async Task<byte[]> DownloadImageAsync(string imageURL) {
+        throw new NotImplementedException();
+    }
 }

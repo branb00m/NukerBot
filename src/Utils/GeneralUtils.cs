@@ -45,4 +45,47 @@ public static class GeneralUtils
 
         return Regex.IsMatch(Path.GetFileName(@filePath), pattern);
     }
+
+    /// <summary>
+    /// Better to add this to GeneralUtils instead of adding it to StringExtensions. Why?
+    /// 
+    /// Extensions aren't properly static, they require an instated string. Strings are immutable.
+    /// 
+    /// There's another way (again, it isn't properly static), by using String.Empty, but that only would create useless objects. The best way is by implementing this in the GeneralUtils class because then, it's properly static and doesn't require an instated string.
+    /// </summary>
+    /// <param name="random"></param>
+    /// <param name="chars"></param>
+    /// <param name="upper"></param>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    public static string Randomize(Random random, string? chars = null, bool? upper = null, int size = 8)
+    {
+        if (size < 8)
+        {
+            throw new Exception($"{nameof(size)} cannot be less than 8 characters");
+        }
+
+        if (string.IsNullOrEmpty(chars))
+        {
+            chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        else
+        {
+            chars = upper switch
+            {
+                true => chars.ToUpper(),
+                false => chars.ToLower(),
+                _ => chars
+            };
+        }
+
+        char[] characters = new char[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            characters[i] = chars[random.Next(chars.Length)];
+        }
+
+        return new string(characters);
+    }
 }
