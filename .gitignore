@@ -2,5 +2,5 @@ bin
 obj
 test.py
 
-src/Config/Custom/Config.jsonc
-src/Config/Default/Config.jsonc
+src/Config/Custom/config.jsonc
+src/Config/Default/config.jsonc

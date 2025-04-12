@@ -182,7 +182,7 @@ public class ProtectionBot
         throw new InvalidOperationException("A DiscordGuild instance is required for this explicit conversion");
     }
 
-    public static async Task<DiscordUser> ToDiscordMemberAsync(ProtectionBot bot, DiscordGuild guild)
+    public static async Task<DiscordMember> ToDiscordMemberAsync(ProtectionBot bot, DiscordGuild guild)
     {
         return await guild.GetMemberAsync(bot.ID);
     }
@@ -238,7 +238,3 @@ public class Config
 
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-
-public sealed class ConfigValidator {
-    
-}
