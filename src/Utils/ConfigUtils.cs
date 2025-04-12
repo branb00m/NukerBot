@@ -25,7 +25,7 @@ public static class ConfigUtils
     }
 
     /// <summary>
-    /// This method is basically redundant outside of `Config`. It's only used to determine if two paths are equal
+    /// This method is only used to determine if two paths are equal
     /// </summary>
     /// <param name="inputPath"></param>
     /// /// <param name="targetPath"></param>
@@ -49,25 +49,5 @@ public static class ConfigUtils
         }
 
         return normalizedInput.Equals(normalizedTarget, StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static object? GetDefaultValue(Type type)
-    {
-        if (type.IsValueType)
-        {
-            return Activator.CreateInstance(type);
-        }
-
-        if (type == typeof(string))
-        {
-            return string.Empty;
-        }
-
-        if (typeof(IEnumerable).IsAssignableFrom(type))
-        {
-            return Activator.CreateInstance(type);
-        }
-
-        return null;
     }
 }

@@ -3,7 +3,7 @@ using NukerBot.src.Core.Strategies.Proxies;
 
 namespace NukerBot.src.Core.Delegating;
 
-public sealed partial class DelegatedNetworkInstance : object
+public partial class DelegatedNetworkInstance : object
 {
     public ulong ID { get; }
     public InstanceCodes Status { get; private set; } = InstanceCodes.Offline;
@@ -29,8 +29,7 @@ public sealed partial class DelegatedNetworkInstance : object
 
         Status = InstanceCodes.Offline;
 
-        OnStatusChanged?.Invoke(this, new StatusChangedEventArgs(ID, Status, client));
-
+        await OnStatusChangedAsync();
         await Task.CompletedTask;
     }
 
@@ -40,14 +39,14 @@ public sealed partial class DelegatedNetworkInstance : object
         {
             return;
         }
-
         Status = InstanceCodes.Restarted;
 
-        await Task.Delay(500);
+        await OnStatusChangedAsync();
+        await Task.Delay(500); // this line is literally for simulation. modify it if you want, you're a bozo if you do
+        await OnStatusChangedAsync();
 
         Status = InstanceCodes.Online;
 
-        OnStatusChanged?.Invoke(this, new StatusChangedEventArgs(ID, Status, client));
 
         await Task.CompletedTask;
     }
@@ -61,8 +60,7 @@ public sealed partial class DelegatedNetworkInstance : object
 
         Status = InstanceCodes.Idle;
 
-        OnStatusChanged?.Invoke(this, new StatusChangedEventArgs(ID, Status, client));
-
+        await OnStatusChangedAsync();
         await Task.CompletedTask;
     }
 
@@ -75,25 +73,28 @@ public sealed partial class DelegatedNetworkInstance : object
 
         Status = InstanceCodes.Online;
 
-        OnStatusChanged?.Invoke(this, new StatusChangedEventArgs(ID, Status, client));
-
+        await OnStatusChangedAsync();
         await Task.CompletedTask;
     }
 }
 
-public sealed partial class DelegatedNetworkInstance : object
+public partial class DelegatedNetworkInstance : object
 {
-    public event EventHandler? OnStatusChanged;
-    public event EventHandler? OnLastAction;
+    public event OnStatusChanged? StatusChanged;
+    public event OnLastAction? LastAction;
 
-    async Task StatusChanged(InstanceCodes status, DiscordClient client)
+    public delegate Task OnStatusChanged(object sender, StatusChangedEventArgs args);
+    public delegate Task OnLastAction(object sender, LastActionEventArgs args);
+
+    protected virtual async Task OnStatusChangedAsync()
     {
-        OnStatusChanged?.Invoke(this, new StatusChangedEventArgs(ID, status, client));
-
-        await Task.CompletedTask;
+        if (StatusChanged is not null)
+        {
+            await StatusChanged.Invoke(this, new StatusChangedEventArgs(ID, Status, client));
+        }
     }
 
-    async Task LastAction(DateTime time) {
-        await Task.CompletedTask;
+    protected virtual async Task OnLastActionAsync() {
+        throw new NotImplementedException();
     }
 }

@@ -7,8 +7,8 @@ public class Program
 {
     public async static Task Main(string[] args)
     {
-        //Bot bot = new();
-        //await bot.Start();
+        Bot bot = new();
+        await bot.Start();
 
         GeneralUtils.GetTotalLines("/home/bran/Documents/Programming/NukerBot/");
 
